@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Martin Almeida — Full Stack Developer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            gold: {
+              300: '#f0d080',
+              400: '#d4a843',
+              500: '#b8860b',
+              600: '#9a6f0a',
+            },
+            dark: {
+              900: '#080808',
+              800: '#0f0f0f',
+              700: '#161616',
+              600: '#1e1e1e',
+              500: '#2a2a2a',
+              400: '#3a3a3a',
+            }
+          },
+          fontFamily: {
+            display: ['Cormorant Garamond', 'serif'],
+            mono: ['DM Mono', 'monospace'],
+            body: ['Outfit', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    :root {
+      --gold: #d4a843;
+      --gold-light: #f0d080;
+      --dark: #080808;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: #080808;
+      color: #e8e8e8;
+      font-family: 'Outfit', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* Grain overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.4;
+    }
+
+    /* Gold gradient line */
+    .gold-line {
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      height: 1px;
+    }
+
+    /* Animated hero name */
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    @keyframes shimmer {
+      0%   { background-position: -200% center; }
+      100% { background-position:  200% center; }
+    }
+
+    .hero-name {
+      animation: fadeSlideUp 1s ease both;
+      animation-delay: 0.2s;
+    }
+
+    .hero-title {
+      animation: fadeSlideUp 1s ease both;
+      animation-delay: 0.45s;
+    }
+
+    .hero-desc {
+      animation: fadeSlideUp 1s ease both;
+      animation-delay: 0.65s;
+    }
+
+    .hero-cta {
+      animation: fadeSlideUp 1s ease both;
+      animation-delay: 0.85s;
+    }
+
+    .gold-shimmer {
+      background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 40%, var(--gold) 60%, #9a6f0a 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 4s linear infinite;
+    }
+
+    /* Section reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Tech pill hover */
+    .tech-pill {
+      border: 1px solid #2a2a2a;
+      transition: border-color 0.25s, background 0.25s, color 0.25s;
+    }
+
+    .tech-pill:hover {
+      border-color: var(--gold);
+      background: rgba(212, 168, 67, 0.08);
+      color: var(--gold-light);
+    }
+
+    /* Timeline dot */
+    .timeline-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--gold);
+      flex-shrink: 0;
+      margin-top: 6px;
+      box-shadow: 0 0 10px rgba(212, 168, 67, 0.4);
+    }
+
+    /* Project card */
+    .project-card {
+      border: 1px solid #1e1e1e;
+      transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    }
+
+    .project-card:hover {
+      border-color: var(--gold);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(212, 168, 67, 0.1);
+    }
+
+    /* Nav link */
+    .nav-link {
+      position: relative;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      color: #888;
+      transition: color 0.2s;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--gold);
+      transition: width 0.3s;
+    }
+
+    .nav-link:hover { color: var(--gold-light); }
+    .nav-link:hover::after { width: 100%; }
+
+    /* Background decorative mesh */
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .hero-bg::before {
+      content: '';
+      position: absolute;
+      top: -200px;
+      right: -200px;
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(212,168,67,0.04) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      bottom: -100px;
+      left: -100px;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(212,168,67,0.03) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    /* Scroll indicator */
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(8px); }
+    }
+
+    .scroll-indicator { animation: bounce 2s ease-in-out infinite; }
+
+    /* Contact link */
+    .contact-link {
+      color: #888;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.8rem;
+      transition: color 0.2s;
+    }
+    .contact-link:hover { color: var(--gold-light); }
+
+    /* Badge */
+    .badge {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      padding: 3px 10px;
+      border: 1px solid #2a2a2a;
+      border-radius: 2px;
+      color: #666;
+    }
+
+    .badge-gold {
+      border-color: rgba(212,168,67,0.4);
+      color: var(--gold);
+      background: rgba(212,168,67,0.05);
+    }
+
+    /* Section label */
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    /* Cursor blink */
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+    .cursor { animation: blink 1.2s step-end infinite; }
+
+    /* Progress bar */
+    .progress-bar {
+      height: 1px;
+      background: #1e1e1e;
+      position: relative;
+    }
+    .progress-bar::after {
+      content: '';
+      position: absolute;
+      left: 0; top: 0;
+      height: 100%;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light));
+      width: var(--w, 80%);
+      animation: growBar 1.5s ease both;
+    }
+    @keyframes growBar {
+      from { width: 0; }
+      to   { width: var(--w, 80%); }
+    }
+  </style>
+</head>
+
+<body class="antialiased">
+
+  <!-- ─── NAVBAR ─── -->
+  <nav class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 py-5" style="background: linear-gradient(to bottom, rgba(8,8,8,0.98), transparent);">
+    <span class="font-mono text-xs tracking-widest" style="color: var(--gold);">MA<span class="cursor">_</span></span>
+    <div class="flex gap-8">
+      <a href="#sobre-mi" class="nav-link">SOBRE MÍ</a>
+      <a href="#experiencia" class="nav-link">EXPERIENCIA</a>
+      <a href="#proyectos" class="nav-link">PROYECTOS</a>
+      <a href="#stack" class="nav-link">STACK</a>
+      <a href="#contacto" class="nav-link">CONTACTO</a>
+    </div>
+  </nav>
+
+  <!-- ─── HERO ─── -->
+  <section class="relative min-h-screen flex flex-col justify-center px-8 md:px-16 lg:px-32 pt-20">
+    <div class="hero-bg"></div>
+
+    <!-- Decorative vertical line -->
+    <div class="absolute left-8 md:left-16 top-0 bottom-0 w-px" style="background: linear-gradient(to bottom, transparent, rgba(212,168,67,0.15), transparent);"></div>
+
+    <div class="relative max-w-5xl">
+      <div class="mb-6">
+        <span class="badge badge-gold">DESARROLLADOR FULL STACK SENIOR</span>
+      </div>
+
+      <h1 class="hero-name font-display font-light leading-none mb-4" style="font-size: clamp(3.5rem, 9vw, 8rem);">
+        Martin<br/>
+        <span class="gold-shimmer font-semibold">Almeida</span>
+      </h1>
+
+      <p class="hero-title font-mono text-sm tracking-widest mb-8" style="color: #555;">
+        BUCARAMANGA, COL &nbsp;·&nbsp; 7+ AÑOS DE EXPERIENCIA &nbsp;·&nbsp; FULL STACK
+      </p>
+
+      <p class="hero-desc font-body max-w-xl leading-relaxed mb-10" style="color: #999; font-size: 1.05rem;">
+        Arquitecto de soluciones web y móviles. Especialista en Laravel, Flutter y ecosistemas modernos de JavaScript. Con un trasfondo adicional en artes visuales que define cada interfaz que construyo.
+      </p>
+
+      <div class="hero-cta flex gap-4 flex-wrap">
+        <a href="#proyectos" class="font-body font-medium px-7 py-3 text-sm tracking-wide transition-all duration-300"
+           style="background: var(--gold); color: #080808; border-radius: 2px; hover:opacity:0.9;"
+           onmouseover="this.style.background='#f0d080'" onmouseout="this.style.background='var(--gold)'">
+          Ver Proyectos
+        </a>
+        <a href="#contacto" class="font-body font-medium px-7 py-3 text-sm tracking-wide border transition-all duration-300"
+           style="border-color: #2a2a2a; color: #888; border-radius: 2px;"
+           onmouseover="this.style.borderColor='var(--gold)'; this.style.color='var(--gold-light)'"
+           onmouseout="this.style.borderColor='#2a2a2a'; this.style.color='#888'">
+          Contactar
+        </a>
+      </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-10 left-8 md:left-16 scroll-indicator flex flex-col items-center gap-2">
+      <span class="font-mono text-xs" style="color: #444; writing-mode: vertical-rl; letter-spacing: 0.15em;">SCROLL</span>
+      <div class="w-px h-8" style="background: linear-gradient(to bottom, #444, transparent);"></div>
+    </div>
+  </section>
+
+  <div class="gold-line mx-8 md:mx-16 lg:mx-32"></div>
+
+  <!-- ─── SOBRE MÍ ─── -->
+  <section id="sobre-mi" class="px-8 md:px-16 lg:px-32 py-28 reveal">
+    <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-16 items-start">
+      <div>
+        <p class="section-label mb-6">01 / SOBRE MÍ</p>
+        <h2 class="font-display font-light mb-6 leading-tight" style="font-size: clamp(2rem, 4vw, 3.2rem); color: #f0f0f0;">
+          Código con<br/><span style="color: var(--gold);">propósito estético</span>
+        </h2>
+        <p class="font-body leading-loose mb-5" style="color: #888; font-size: 0.95rem;">
+          Soy desarrollador Full Stack Senior con más de <strong style="color: #ccc;">7 años</strong> construyendo aplicaciones web y móviles de alto rendimiento. Mi formación en <strong style="color: #ccc;">Ingeniería Informática (Unipaz, 2022)</strong> se complementa con una visión única forjada durante 10 años en artes visuales.
+        </p>
+        <p class="font-body leading-loose" style="color: #888; font-size: 0.95rem;">
+          Cada proyecto que asumo nace desde la arquitectura, evoluciona con código limpio y culmina en una interfaz que el usuario recuerda. No sólo escribo funcionalidades — diseño experiencias.
+        </p>
+      </div>
+
+      <div class="space-y-6">
+        <p class="section-label mb-6">ESPECIALIDADES</p>
+        <div class="space-y-4">
+          <div>
+            <div class="flex justify-between mb-2">
+              <span class="font-mono text-xs" style="color: #aaa;">Full Stack Web</span>
+              <span class="font-mono text-xs" style="color: var(--gold);">95%</span>
+            </div>
+            <div class="progress-bar" style="--w: 95%;"></div>
+          </div>
+          <div>
+            <div class="flex justify-between mb-2">
+              <span class="font-mono text-xs" style="color: #aaa;">Desarrollo Móvil</span>
+              <span class="font-mono text-xs" style="color: var(--gold);">85%</span>
+            </div>
+            <div class="progress-bar" style="--w: 85%;"></div>
+          </div>
+          <div>
+            <div class="flex justify-between mb-2">
+              <span class="font-mono text-xs" style="color: #aaa;">Arquitectura & APIs</span>
+              <span class="font-mono text-xs" style="color: var(--gold);">90%</span>
+            </div>
+            <div class="progress-bar" style="--w: 90%;"></div>
+          </div>
+          <div>
+            <div class="flex justify-between mb-2">
+              <span class="font-mono text-xs" style="color: #aaa;">UI / UX Design</span>
+              <span class="font-mono text-xs" style="color: var(--gold);">80%</span>
+            </div>
+            <div class="progress-bar" style="--w: 80%;"></div>
+          </div>
+          <div>
+            <div class="flex justify-between mb-2">
+              <span class="font-mono text-xs" style="color: #aaa;">DevOps & Deploy</span>
+              <span class="font-mono text-xs" style="color: var(--gold);">75%</span>
+            </div>
+            <div class="progress-bar" style="--w: 75%;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="gold-line mx-8 md:mx-16 lg:mx-32"></div>
+
+  <!-- ─── STACK ─── -->
+  <section id="stack" class="px-8 md:px-16 lg:px-32 py-28 reveal">
+    <div class="max-w-5xl mx-auto">
+      <p class="section-label mb-6">02 / STACK TECNOLÓGICO</p>
+      <h2 class="font-display font-light mb-12 leading-tight" style="font-size: clamp(2rem, 4vw, 3.2rem); color: #f0f0f0;">
+        Herramientas que<br/><span style="color: var(--gold);">domino</span>
+      </h2>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+
+        <!-- Web Back-End -->
+        <div class="col-span-2 md:col-span-4 mb-2">
+          <span class="font-mono text-xs tracking-widest" style="color: #555;">— BACK-END</span>
+        </div>
+        <div class="tech-pill p-4 rounded-sm" style="background: #0f0f0f;">
+          <div class="text-2xl mb-2">⚡</div>
+          <div class="font-body font-medium text-sm mb-1" style="color: #ddd;">Laravel</div>
+          <div class="font-mono text-xs" style="color: #555;">v12 · PHP</div>
+        </div>
+        <div class="tech-pill p-4 rounded-sm" style="background: #0f0f0f;">
+          <div class="text-2xl mb-2">🐍</div>
+          <div class="font-body font-medium text-sm mb-1" style="color: #ddd;">FastAPI</div>
+          <div class="font-mono text-xs" style="color: #555;">Python</div>
+        </div>
+        <div class="tech-pill p-4 rounded-sm" style="background: #0f0f0f;">
+          <div class="text-2xl mb-2">🦅</div>
+          <div class="font-body font-medium text-sm mb-1" style="color: #ddd;">NestJS</div>
+          <div class="font-mono text-xs" style="color: #555;">Node · TypeScript</div>
+        </div>
+        <div class="tech-pill p-4 rounded-sm" style="background: #0f0f0f;">
+          <div class="text-2xl mb-2">🐘</div>
+          <div class="font-body font-medium text-sm mb-1" style="color: #ddd;">PHP</div>
+          <div class="font-mono text-xs" style="color: #555;">Core · OOP</div>
+        </div>
+
+        <!-- Front-End -->
+        <div class="col-span-2 md:col-span-4 mt-4 mb-2">
+          <span class="font-mono text-xs tracking-widest" style="color: #555;">— FRONT-END</span>
+        </div>
+        <div class="tech-pill p-4 rounded-sm" style="background: #0f0f0f;">
+          <div class="text-2xl mb-2">⚛️</div>
+          <div class="font-body font-medium text-sm mb-1" style="color: #ddd;">React</div>
+          <div class="font-mono text-xs" style="color: #555;">Hooks · SPA</div>
+        </div>
+        <div class="tech-pill p-4 rounded-sm" style="background: #0f0f0f;">
+          <div class="text-2xl mb-2">🌊</div>
+          <div class="font-body font-medium text-sm mb-1" style="color: #ddd;">Tailwind CSS</div>
+          <div class="font-mono text-xs" style="color: #555;">CSS · UI</div>
+        </div>
+        <div class="tech-pill p-4 rounded-sm" style="background: #0f0f0f;">
+          <div class="text-2xl mb-2">☁️</div>
+          <div class="font-body font-medium text-sm mb-1" style="color: #ddd;">JavaScript</div>
+          <div class="font-mono text-xs" style="color: #555;">ES6+ · Vanilla</div>
+        </div>
+        <div class="tech-pill p-4 rounded-sm" style="background: #0f0f0f;">
+          <div class="text-2xl mb-2">🎨</div>
+          <div class="font-body font-medium text-sm mb-1" style="color: #ddd;">CSS</div>
+          <div class="font-mono text-xs" style="color: #555;">Animations · Grid</div>
+        </div>
+
+        <!-- Móvil -->
+        <div class="col-span-2 md:col-span-4 mt-4 mb-2">
+          <span class="font-mono text-xs tracking-widest" style="color: #555;">— MÓVIL</span>
+        </div>
+        <div class="tech-pill p-4 rounded-sm" style="background: #0f0f0f;">
+          <div class="text-2xl mb-2">🐦</div>
+          <div class="font-body font-medium text-sm mb-1" style="color: #ddd;">Flutter</div>
+          <div class="font-mono text-xs" style="color: #555;">Dart · Android / iOS</div>
+        </div>
+        <div class="tech-pill p-4 rounded-sm" style="background: #0f0f0f;">
+          <div class="text-2xl mb-2">📱</div>
+          <div class="font-body font-medium text-sm mb-1" style="color: #ddd;">React Native</div>
+          <div class="font-mono text-xs" style="color: #555;">Cross-platform</div>
+        </div>
+
+        <!-- DevOps -->
+        <div class="col-span-2 md:col-span-4 mt-4 mb-2">
+          <span class="font-mono text-xs tracking-widest" style="color: #555;">— DEVOPS & BD</span>
+        </div>
+        <div class="tech-pill p-4 rounded-sm" style="background: #0f0f0f;">
+          <div class="text-2xl mb-2">🐳</div>
+          <div class="font-body font-medium text-sm mb-1" style="color: #ddd;">Docker</div>
+          <div class="font-mono text-xs" style="color: #555;">Containers · Deploy</div>
+        </div>
+        <div class="tech-pill p-4 rounded-sm" style="background: #0f0f0f;">
+          <div class="text-2xl mb-2">🗄️</div>
+          <div class="font-body font-medium text-sm mb-1" style="color: #ddd;">Bases de Datos</div>
+          <div class="font-mono text-xs" style="color: #555;">MySQL · PostgreSQL</div>
+        </div>
+        <div class="tech-pill p-4 rounded-sm" style="background: #0f0f0f;">
+          <div class="text-2xl mb-2">🔌</div>
+          <div class="font-body font-medium text-sm mb-1" style="color: #ddd;">APIs REST</div>
+          <div class="font-mono text-xs" style="color: #555;">Facturación · Google</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="gold-line mx-8 md:mx-16 lg:mx-32"></div>
+
+  <!-- ─── EXPERIENCIA ─── -->
+  <section id="experiencia" class="px-8 md:px-16 lg:px-32 py-28 reveal">
+    <div class="max-w-5xl mx-auto">
+      <p class="section-label mb-6">03 / EXPERIENCIA</p>
+      <h2 class="font-display font-light mb-14 leading-tight" style="font-size: clamp(2rem, 4vw, 3.2rem); color: #f0f0f0;">
+        Trayectoria<br/><span style="color: var(--gold);">profesional</span>
+      </h2>
+
+      <div class="relative">
+        <!-- Vertical line -->
+        <div class="absolute left-4 top-2 bottom-2 w-px" style="background: linear-gradient(to bottom, var(--gold), rgba(212,168,67,0.1));"></div>
+
+        <div class="space-y-12 pl-12">
+
+          <!-- Job 1 -->
+          <div class="relative">
+            <div class="timeline-dot absolute -left-9 top-1"></div>
+            <div class="flex flex-wrap items-start justify-between gap-2 mb-3">
+              <div>
+                <h3 class="font-body font-semibold text-base mb-1" style="color: #eee;">Desarrollador Full Stack</h3>
+                <p class="font-mono text-xs tracking-wide" style="color: var(--gold);">TECNOLOGÍAS SINERGIA</p>
+              </div>
+              <span class="badge">FEB 2026 — PRESENTE</span>
+            </div>
+            <p class="font-body text-sm leading-relaxed" style="color: #777;">
+              Desarrollo y mantenimiento de soluciones corporativas de alto rendimiento. Arquitectura de sistemas modernos con stack actualizado.
+            </p>
+          </div>
+
+          <!-- Job 2 -->
+          <div class="relative">
+            <div class="timeline-dot absolute -left-9 top-1"></div>
+            <div class="flex flex-wrap items-start justify-between gap-2 mb-3">
+              <div>
+                <h3 class="font-body font-semibold text-base mb-1" style="color: #eee;">Asistente de Soporte y Desarrollo</h3>
+                <p class="font-mono text-xs tracking-wide" style="color: var(--gold);">LH S.A.S &nbsp;·&nbsp; MÓVIL & WEB</p>
+              </div>
+              <span class="badge">MAY 2025 — FEB 2026</span>
+            </div>
+            <p class="font-body text-sm leading-relaxed" style="color: #777;">
+              Soporte técnico especializado y desarrollo de módulos adicionales para plataformas internas. Integración con sistemas legacy y nuevas APIs.
+            </p>
+          </div>
+
+          <!-- Job 3 -->
+          <div class="relative">
+            <div class="timeline-dot absolute -left-9 top-1"></div>
+            <div class="flex flex-wrap items-start justify-between gap-2 mb-3">
+              <div>
+                <h3 class="font-body font-semibold text-base mb-1" style="color: #eee;">Desarrollador Front End</h3>
+                <p class="font-mono text-xs tracking-wide" style="color: var(--gold);">AGRICAPITAL</p>
+              </div>
+              <span class="badge">MAY 2024 — OCT 2024</span>
+            </div>
+            <p class="font-body text-sm leading-relaxed" style="color: #777;">
+              Implementación de interfaces de usuario modernas y optimización de la experiencia del cliente en plataformas financieras. Colaboración en la app móvil de clientes.
+            </p>
+          </div>
+
+          <!-- Job 4 -->
+          <div class="relative">
+            <div class="timeline-dot absolute -left-9 top-1"></div>
+            <div class="flex flex-wrap items-start justify-between gap-2 mb-3">
+              <div>
+                <h3 class="font-body font-semibold text-base mb-1" style="color: #eee;">Desarrollador de Software</h3>
+                <p class="font-mono text-xs tracking-wide" style="color: var(--gold);">DBC S.A.S</p>
+              </div>
+              <span class="badge">ENE 2023 — DIC 2023</span>
+            </div>
+            <p class="font-body text-sm leading-relaxed" style="color: #777;">
+              Desarrollo a tiempo completo de soluciones de software empresarial. Gestión de proyectos desde análisis de requerimientos hasta despliegue.
+            </p>
+          </div>
+
+          <!-- Job 5 -->
+          <div class="relative">
+            <div class="timeline-dot absolute -left-9 top-1" style="background: #3a3a3a; box-shadow: none;"></div>
+            <div class="flex flex-wrap items-start justify-between gap-2 mb-3">
+              <div>
+                <h3 class="font-body font-semibold text-base mb-1" style="color: #eee;">Programador</h3>
+                <p class="font-mono text-xs tracking-wide" style="color: #555;">RVO IPS S.A.S</p>
+              </div>
+              <span class="badge">ENE 2022 — OCT 2022</span>
+            </div>
+            <p class="font-body text-sm leading-relaxed" style="color: #777;">
+              Desarrollo de sistemas informáticos bajo la modalidad de prestación de servicios.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="gold-line mx-8 md:mx-16 lg:mx-32"></div>
+
+  <!-- ─── PROYECTOS ─── -->
+  <section id="proyectos" class="px-8 md:px-16 lg:px-32 py-28 reveal">
+    <div class="max-w-5xl mx-auto">
+      <p class="section-label mb-6">04 / PROYECTOS</p>
+      <h2 class="font-display font-light mb-14 leading-tight" style="font-size: clamp(2rem, 4vw, 3.2rem); color: #f0f0f0;">
+        Trabajo que<br/><span style="color: var(--gold);">habla solo</span>
+      </h2>
+
+      <div class="grid md:grid-cols-2 gap-6">
+
+        <!-- Project 1 - Lineas Hospitalarias -->
+        <div class="project-card p-8 rounded-sm" style="background: #0f0f0f;">
+          <div class="flex items-start justify-between mb-6">
+            <div class="w-12 h-12 rounded-sm flex items-center justify-center text-2xl" style="background: rgba(212,168,67,0.08); border: 1px solid rgba(212,168,67,0.2);">
+              🏥
+            </div>
+            <span class="badge badge-gold">PROYECTO PROPIO</span>
+          </div>
+          <h3 class="font-display font-semibold text-xl mb-2" style="color: #f0f0f0;">Líneas Hospitalarias</h3>
+          <p class="font-mono text-xs tracking-wide mb-4" style="color: var(--gold);">FLUTTER · DART · CLOUD</p>
+          <p class="font-body text-sm leading-relaxed mb-6" style="color: #777;">
+            Aplicación móvil desarrollada <strong style="color: #aaa;">íntegramente en solitario</strong> — desde la arquitectura y programación hasta el despliegue en producción en la nube y Google Play Store. Un proyecto que demuestra capacidad end-to-end completa.
+          </p>
+          <div class="flex flex-wrap gap-2 mb-6">
+            <span class="font-mono text-xs px-2 py-1 rounded-sm" style="background: #161616; color: #666;">Flutter</span>
+            <span class="font-mono text-xs px-2 py-1 rounded-sm" style="background: #161616; color: #666;">Cloud Deploy</span>
+            <span class="font-mono text-xs px-2 py-1 rounded-sm" style="background: #161616; color: #666;">Play Store</span>
+            <span class="font-mono text-xs px-2 py-1 rounded-sm" style="background: #161616; color: #666;">Arquitectura</span>
+          </div>
+          <a href="https://play.google.com/store/apps/details?id=com.lineas.hospitalarias" target="_blank" rel="noopener"
+             class="inline-flex items-center gap-2 font-mono text-xs tracking-wide transition-colors"
+             style="color: var(--gold);"
+             onmouseover="this.style.color='var(--gold-light)'" onmouseout="this.style.color='var(--gold)'">
+            Ver en Play Store
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+          </a>
+        </div>
+
+        <!-- Project 2 - AgriCapital -->
+        <div class="project-card p-8 rounded-sm" style="background: #0f0f0f;">
+          <div class="flex items-start justify-between mb-6">
+            <div class="w-12 h-12 rounded-sm flex items-center justify-center text-2xl" style="background: rgba(212,168,67,0.06); border: 1px solid #2a2a2a;">
+              🌾
+            </div>
+            <span class="badge">COLABORADOR</span>
+          </div>
+          <h3 class="font-display font-semibold text-xl mb-2" style="color: #f0f0f0;">AgriCapital Clientes</h3>
+          <p class="font-mono text-xs tracking-wide mb-4" style="color: #666;">FLUTTER · FINTECH · MÓVIL</p>
+          <p class="font-body text-sm leading-relaxed mb-6" style="color: #777;">
+            Aplicación móvil para la plataforma financiera agrícola AgriCapital. Participé como colaborador en el desarrollo de la app de clientes, optimizando la experiencia del usuario en el sector fintech.
+          </p>
+          <div class="flex flex-wrap gap-2 mb-6">
+            <span class="font-mono text-xs px-2 py-1 rounded-sm" style="background: #161616; color: #666;">Flutter</span>
+            <span class="font-mono text-xs px-2 py-1 rounded-sm" style="background: #161616; color: #666;">Fintech</span>
+            <span class="font-mono text-xs px-2 py-1 rounded-sm" style="background: #161616; color: #666;">UI/UX</span>
+          </div>
+          <a href="https://play.google.com/store/apps/details?id=co.com.agricapital.app_clientes" target="_blank" rel="noopener"
+             class="inline-flex items-center gap-2 font-mono text-xs tracking-wide transition-colors"
+             style="color: #666;"
+             onmouseover="this.style.color='var(--gold-light)'" onmouseout="this.style.color='#666'">
+            Ver en Play Store
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="gold-line mx-8 md:mx-16 lg:mx-32"></div>
+
+  <!-- ─── CONTACTO ─── -->
+  <section id="contacto" class="px-8 md:px-16 lg:px-32 py-28 reveal">
+    <div class="max-w-5xl mx-auto">
+      <p class="section-label mb-6">05 / CONTACTO</p>
+
+      <div class="grid md:grid-cols-2 gap-16 items-end">
+        <div>
+          <h2 class="font-display font-light mb-6 leading-tight" style="font-size: clamp(2.5rem, 5vw, 4rem); color: #f0f0f0;">
+            Hablemos de<br/><span style="color: var(--gold);">tu proyecto</span>
+          </h2>
+          <p class="font-body leading-loose" style="color: #777; font-size: 0.95rem;">
+            Estoy disponible para proyectos freelance, colaboraciones y oportunidades de tiempo completo. Si tienes una idea que necesita vida, escríbeme.
+          </p>
+        </div>
+
+        <div class="space-y-6">
+          <a href="mailto:martinalmeida56@gmail.com" class="flex items-center gap-4 group">
+            <div class="w-10 h-10 rounded-sm flex items-center justify-center transition-all" style="background: #161616; border: 1px solid #2a2a2a;" >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <div>
+              <p class="font-mono text-xs mb-1" style="color: #555;">EMAIL</p>
+              <p class="contact-link" onmouseover="this.style.color='var(--gold-light)'" onmouseout="this.style.color='#888'">martinalmeida56@gmail.com</p>
+            </div>
+          </a>
+
+          <a href="tel:+573107698290" class="flex items-center gap-4">
+            <div class="w-10 h-10 rounded-sm flex items-center justify-center" style="background: #161616; border: 1px solid #2a2a2a;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.37 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.56a16 16 0 0 0 6.29 6.29l.95-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </div>
+            <div>
+              <p class="font-mono text-xs mb-1" style="color: #555;">TELÉFONO</p>
+              <p class="contact-link" onmouseover="this.style.color='var(--gold-light)'" onmouseout="this.style.color='#888'">+57 310 769 8290</p>
+            </div>
+          </a>
+
+          <a href="https://github.com/martinalmeida" target="_blank" rel="noopener" class="flex items-center gap-4">
+            <div class="w-10 h-10 rounded-sm flex items-center justify-center" style="background: #161616; border: 1px solid #2a2a2a;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="1.5"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            </div>
+            <div>
+              <p class="font-mono text-xs mb-1" style="color: #555;">GITHUB</p>
+              <p class="contact-link" onmouseover="this.style.color='var(--gold-light)'" onmouseout="this.style.color='#888'">github.com/martinalmeida</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ─── -->
+  <footer class="px-8 md:px-16 lg:px-32 py-10 border-t" style="border-color: #161616;">
+    <div class="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+      <span class="font-mono text-xs" style="color: #333;">© 2026 Martin Danilo Almeida Cavanzo</span>
+      <span class="font-mono text-xs" style="color: #333;">BUCARAMANGA, COLOMBIA</span>
+      <span class="font-mono text-xs" style="color: #333;">FULL STACK DEVELOPER</span>
+    </div>
+  </footer>
+
+  <!-- ─── SCROLL REVEAL SCRIPT ─── -->
+  <script>
+    const observer = new IntersectionObserver(
+      entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+      { threshold: 0.1 }
+    );
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
