@@ -1516,6 +1516,49 @@
         font-size: 0.75rem;
         opacity: 0.5;
       }
+      .gc-team-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.7rem;
+        margin-top: 1.4rem;
+      }
+
+      .gc-team-member {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        text-decoration: none;
+
+        font-family: "DM Mono", monospace;
+        font-size: 0.58rem;
+        letter-spacing: 0.08em;
+
+        color: #4a4a4a;
+
+        padding: 0.55rem 0.9rem;
+
+        border: 1px solid #1c1c1c;
+        background: rgba(255, 255, 255, 0.01);
+
+        border-radius: 2px;
+
+        transition:
+          border-color 0.25s,
+          color 0.25s,
+          transform 0.25s,
+          background 0.25s;
+      }
+
+      .gc-team-member:hover {
+        color: var(--gold-light);
+        border-color: rgba(212, 168, 67, 0.28);
+        background: rgba(212, 168, 67, 0.04);
+        transform: translateY(-2px);
+      }
+
+      .gc-team-member svg {
+        opacity: 0.7;
+      }
     </style>
   </head>
   <body>
@@ -2100,7 +2143,7 @@
             <div class="gc-logo-inner">G</div>
           </div>
           <div class="gc-brand-text">
-            <div class="gc-name">GoaltCore</div>
+            <div class="gc-name">GoaltCore 🐐</div>
             <div class="gc-tagline">
               SUITE EMPRESARIAL · MULTIMÓDULO · ESCALABLE
             </div>
@@ -2115,6 +2158,70 @@
               <span class="gc-pill gc-pill-wip"
                 >CLIENTE EN ESPERA DEL PRODUCTO</span
               >
+            </div>
+            <div class="gc-team-links reveal">
+              <a
+                href="https://github.com/TU_GITHUB"
+                target="_blank"
+                rel="noopener"
+                class="gc-team-member"
+              >
+                <svg
+                  width="15"
+                  height="15"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                >
+                  <path
+                    d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
+                  />
+                </svg>
+                Martin Almeida
+              </a>
+
+              <a
+                href="https://github.com/Jonathandeveloper19"
+                target="_blank"
+                rel="noopener"
+                class="gc-team-member"
+              >
+                <svg
+                  width="15"
+                  height="15"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                >
+                  <path
+                    d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
+                  />
+                </svg>
+                Jonathan Goméz
+              </a>
+
+              <a
+                href="https://github.com/Norman13xx5"
+                target="_blank"
+                rel="noopener"
+                class="gc-team-member"
+              >
+                <svg
+                  width="15"
+                  height="15"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                >
+                  <path
+                    d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
+                  />
+                </svg>
+                Brayan Diaz
+              </a>
             </div>
           </div>
         </div>
@@ -2135,7 +2242,7 @@
           <div class="gc-card reveal">
             <div class="gc-card-shine"></div>
             <div class="gc-card-icon">📊</div>
-            <div class="gc-card-title">GoaltBI</div>
+            <div class="gc-card-title">DataCore</div>
             <div class="gc-card-sub">POWER BI CASERO · SQL FIRST</div>
             <div class="gc-card-desc">
               Motor de análisis y visualización de datos enfocado exclusivamente
