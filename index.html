@@ -1174,6 +1174,348 @@
           opacity: 0;
         }
       }
+
+      /* ══ GOALTCORE SECTION ══ */
+      #goaltcore {
+        position: relative;
+        overflow: hidden;
+      }
+      #goaltcore::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(212, 168, 67, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(212, 168, 67, 0.03) 1px, transparent 1px);
+        background-size: 48px 48px;
+        pointer-events: none;
+      }
+
+      .gc-brand {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 3rem;
+        flex-wrap: wrap;
+      }
+      .gc-logo-wrap {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 52px;
+        height: 52px;
+        border: 1px solid rgba(212, 168, 67, 0.3);
+        border-radius: 4px;
+        background: rgba(212, 168, 67, 0.06);
+        flex-shrink: 0;
+        position: relative;
+        overflow: hidden;
+      }
+      .gc-logo-wrap::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          circle at 30% 30%,
+          rgba(212, 168, 67, 0.15),
+          transparent 65%
+        );
+      }
+      .gc-logo-inner {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: var(--gold);
+        line-height: 1;
+        position: relative;
+        z-index: 1;
+      }
+      .gc-brand-text {
+        flex: 1;
+      }
+      .gc-name {
+        font-family: "Cormorant Garamond", serif;
+        font-size: clamp(1.6rem, 3vw, 2.4rem);
+        font-weight: 600;
+        color: #f0f0f0;
+        line-height: 1.1;
+        margin-bottom: 4px;
+      }
+      .gc-tagline {
+        font-family: "DM Mono", monospace;
+        font-size: 0.58rem;
+        letter-spacing: 0.18em;
+        color: #3a3a3a;
+      }
+      .gc-status-row {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        flex-wrap: wrap;
+        margin-top: 0.6rem;
+      }
+      .gc-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-family: "DM Mono", monospace;
+        font-size: 0.54rem;
+        letter-spacing: 0.14em;
+        padding: 0.28rem 0.75rem;
+        border-radius: 2px;
+        white-space: nowrap;
+      }
+      .gc-pill-live {
+        color: #e8b44a;
+        border: 1px solid rgba(232, 180, 74, 0.28);
+        background: rgba(232, 180, 74, 0.06);
+      }
+      .gc-pill-live-dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: #e8b44a;
+        animation: bdot 1.6s ease-in-out infinite;
+      }
+      .gc-pill-team {
+        color: #505050;
+        border: 1px solid #202020;
+        background: transparent;
+      }
+      .gc-pill-wip {
+        color: #888;
+        border: 1px solid #252525;
+        background: transparent;
+      }
+
+      .gc-desc {
+        font-family: "Outfit", sans-serif;
+        font-size: 0.9rem;
+        line-height: 1.92;
+        color: #4e4e4e;
+        max-width: 52rem;
+        margin-bottom: 2.8rem;
+      }
+      .gc-desc strong {
+        color: #999;
+        font-weight: 500;
+      }
+
+      .gc-modules-label {
+        font-family: "DM Mono", monospace;
+        font-size: 0.54rem;
+        letter-spacing: 0.28em;
+        color: #2a2a2a;
+        margin-bottom: 1rem;
+        display: block;
+      }
+      .gc-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.7rem;
+        margin-bottom: 2.4rem;
+      }
+      @media (max-width: 1024px) {
+        .gc-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      @media (max-width: 520px) {
+        .gc-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .gc-card {
+        position: relative;
+        background: var(--dark-2);
+        border: 1px solid #181818;
+        border-radius: var(--radius);
+        padding: 1.4rem 1.2rem;
+        transition:
+          border-color 0.3s,
+          box-shadow 0.3s,
+          transform 0.25s;
+        will-change: transform;
+        cursor: none;
+        overflow: hidden;
+      }
+      .gc-card:hover {
+        border-color: rgba(212, 168, 67, 0.28);
+        box-shadow: 0 12px 40px rgba(212, 168, 67, 0.07);
+        transform: translateY(-4px);
+      }
+      .gc-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(212, 168, 67, 0.18),
+          transparent
+        );
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+      .gc-card:hover::before {
+        opacity: 1;
+      }
+      .gc-card-shine {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.3s;
+        background: radial-gradient(
+          circle at var(--mx, 50%) var(--my, 50%),
+          rgba(212, 168, 67, 0.08) 0%,
+          transparent 55%
+        );
+      }
+      .gc-card:hover .gc-card-shine {
+        opacity: 1;
+      }
+
+      .gc-card-icon {
+        font-size: 1.6rem;
+        margin-bottom: 0.75rem;
+        line-height: 1;
+      }
+      .gc-card-title {
+        font-family: "Outfit", sans-serif;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #ccc;
+        margin-bottom: 0.35rem;
+        transition: color 0.2s;
+      }
+      .gc-card:hover .gc-card-title {
+        color: var(--gold-light);
+      }
+      .gc-card-sub {
+        font-family: "DM Mono", monospace;
+        font-size: 0.52rem;
+        letter-spacing: 0.12em;
+        color: var(--gold);
+        opacity: 0.65;
+        margin-bottom: 0.65rem;
+      }
+      .gc-card-desc {
+        font-family: "Outfit", sans-serif;
+        font-size: 0.8rem;
+        line-height: 1.72;
+        color: #404040;
+      }
+      .gc-card-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.3rem;
+        margin-top: 0.8rem;
+      }
+      .gc-tag {
+        font-family: "DM Mono", monospace;
+        font-size: 0.5rem;
+        padding: 2px 7px;
+        border-radius: 2px;
+        background: #0e0e0e;
+        color: #353535;
+        border: 1px solid #191919;
+      }
+
+      .gc-roadmap-label {
+        font-family: "DM Mono", monospace;
+        font-size: 0.54rem;
+        letter-spacing: 0.28em;
+        color: #2a2a2a;
+        margin-bottom: 1rem;
+        display: block;
+      }
+      .gc-roadmap-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.7rem;
+      }
+      @media (max-width: 640px) {
+        .gc-roadmap-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .gc-future-card {
+        position: relative;
+        border: 1px dashed #1c1c1c;
+        border-radius: var(--radius);
+        padding: 1.4rem 1.2rem;
+        background: transparent;
+        overflow: hidden;
+      }
+      .gc-future-card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: repeating-linear-gradient(
+          -45deg,
+          transparent,
+          transparent 8px,
+          rgba(212, 168, 67, 0.012) 8px,
+          rgba(212, 168, 67, 0.012) 9px
+        );
+      }
+      .gc-future-badge {
+        display: inline-block;
+        font-family: "DM Mono", monospace;
+        font-size: 0.48rem;
+        letter-spacing: 0.16em;
+        padding: 2px 8px;
+        border: 1px solid #222;
+        border-radius: 2px;
+        color: #333;
+        margin-bottom: 0.8rem;
+      }
+      .gc-future-icon {
+        font-size: 1.4rem;
+        margin-bottom: 0.6rem;
+        opacity: 0.4;
+        line-height: 1;
+      }
+      .gc-future-title {
+        font-family: "Outfit", sans-serif;
+        font-size: 0.88rem;
+        font-weight: 600;
+        color: #3a3a3a;
+        margin-bottom: 0.35rem;
+      }
+      .gc-future-sub {
+        font-family: "DM Mono", monospace;
+        font-size: 0.5rem;
+        letter-spacing: 0.12em;
+        color: #282828;
+        margin-bottom: 0.55rem;
+      }
+      .gc-future-desc {
+        font-family: "Outfit", sans-serif;
+        font-size: 0.78rem;
+        line-height: 1.7;
+        color: #303030;
+      }
+      .gc-integration-note {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        margin-top: 0.65rem;
+        font-family: "DM Mono", monospace;
+        font-size: 0.5rem;
+        letter-spacing: 0.1em;
+        color: #2a2a2a;
+      }
+      .gc-int-icon {
+        font-size: 0.75rem;
+        opacity: 0.5;
+      }
     </style>
   </head>
   <body>
@@ -1195,6 +1537,7 @@
       <a href="#stack" onclick="closeMobile()">STACK</a>
       <a href="#experiencia" onclick="closeMobile()">EXPERIENCIA</a>
       <a href="#proyectos" onclick="closeMobile()">PROYECTOS</a>
+      <a href="#goaltcore" onclick="closeMobile()">GOALTCORE</a>
       <a href="#contacto" onclick="closeMobile()">CONTACTO</a>
     </div>
 
@@ -1208,6 +1551,7 @@
         <li><a href="#stack" class="nav-link">STACK</a></li>
         <li><a href="#experiencia" class="nav-link">EXPERIENCIA</a></li>
         <li><a href="#proyectos" class="nav-link">PROYECTOS</a></li>
+        <li><a href="#goaltcore" class="nav-link">GOALTCORE</a></li>
         <li><a href="#contacto" class="nav-link">CONTACTO</a></li>
       </ul>
       <button class="hamburger" id="hamburger" onclick="toggleMobile()">
@@ -1741,12 +2085,167 @@
 
     <div class="gold-divider"></div>
 
+    <!-- GOALTCORE -->
+    <section id="goaltcore">
+      <div class="section">
+        <div class="reveal">
+          <span class="s-label">05 / GOALTCORE</span>
+          <h2 class="s-title">
+            Suite empresarial<br /><span>en desarrollo</span>
+          </h2>
+        </div>
+
+        <div class="gc-brand reveal">
+          <div class="gc-logo-wrap">
+            <div class="gc-logo-inner">G</div>
+          </div>
+          <div class="gc-brand-text">
+            <div class="gc-name">GoaltCore</div>
+            <div class="gc-tagline">
+              SUITE EMPRESARIAL · MULTIMÓDULO · ESCALABLE
+            </div>
+            <div class="gc-status-row">
+              <span class="gc-pill gc-pill-live">
+                <span class="gc-pill-live-dot"></span>
+                PROYECTO ACTIVO
+              </span>
+              <span class="gc-pill gc-pill-team"
+                >EQUIPO DE 3 DESARROLLADORES</span
+              >
+              <span class="gc-pill gc-pill-wip"
+                >CLIENTE EN ESPERA DEL PRODUCTO</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <p class="gc-desc reveal">
+          <strong>GoaltCore</strong> es una suite empresarial que estamos
+          desarrollando actualmente junto con dos compañeros. El objetivo es
+          construir una plataforma modular, centralizada y escalable que permita
+          a las empresas gestionar datos, soporte, proyectos y operaciones
+          internas desde un solo ecosistema. En esta primera etapa ya contamos
+          con cuatro programas funcionales y una visión clara de expansión hacia
+          módulos que se integren entre sí para aumentar la eficiencia
+          operativa.
+        </p>
+
+        <span class="gc-modules-label">MÓDULOS ACTUALES</span>
+        <div class="gc-grid">
+          <div class="gc-card reveal">
+            <div class="gc-card-shine"></div>
+            <div class="gc-card-icon">📊</div>
+            <div class="gc-card-title">GoaltBI</div>
+            <div class="gc-card-sub">POWER BI CASERO · SQL FIRST</div>
+            <div class="gc-card-desc">
+              Motor de análisis y visualización de datos enfocado exclusivamente
+              en SQL, pensado para construir tableros internos con lógica propia
+              y control total sobre la información.
+            </div>
+            <div class="gc-card-tags">
+              <span class="gc-tag">SQL</span>
+              <span class="gc-tag">Dashboards</span>
+              <span class="gc-tag">KPIs</span>
+            </div>
+          </div>
+
+          <div class="gc-card reveal">
+            <div class="gc-card-shine"></div>
+            <div class="gc-card-icon">🎧</div>
+            <div class="gc-card-title">HelpCore</div>
+            <div class="gc-card-sub">MESA DE AYUDA · SLA</div>
+            <div class="gc-card-desc">
+              Sistema de soporte y gestión de tickets con enfoque en tiempos de
+              atención, control SLA, trazabilidad y seguimiento operativo por
+              áreas o equipos.
+            </div>
+            <div class="gc-card-tags">
+              <span class="gc-tag">Tickets</span>
+              <span class="gc-tag">SLA</span>
+              <span class="gc-tag">Soporte</span>
+            </div>
+          </div>
+
+          <div class="gc-card reveal">
+            <div class="gc-card-shine"></div>
+            <div class="gc-card-icon">🧩</div>
+            <div class="gc-card-title">ProjectCore</div>
+            <div class="gc-card-sub">GESTIÓN DE PROYECTOS · SCRUM</div>
+            <div class="gc-card-desc">
+              Administrador de proyectos con planeación, organización de tareas,
+              seguimiento por sprint y una lógica pensada para equipos que
+              trabajan con metodología Scrum.
+            </div>
+            <div class="gc-card-tags">
+              <span class="gc-tag">Scrum</span>
+              <span class="gc-tag">Sprints</span>
+              <span class="gc-tag">Planning</span>
+            </div>
+          </div>
+
+          <div class="gc-card reveal">
+            <div class="gc-card-shine"></div>
+            <div class="gc-card-icon">🛠️</div>
+            <div class="gc-card-title">AssetCore</div>
+            <div class="gc-card-sub">ACTIVOS · MANTENIMIENTOS</div>
+            <div class="gc-card-desc">
+              Control de activos y mantenimientos con visión operativa, diseñado
+              para dar seguimiento a equipos, recursos, intervenciones y estados
+              de mantenimiento.
+            </div>
+            <div class="gc-card-tags">
+              <span class="gc-tag">Activos</span>
+              <span class="gc-tag">Mantenimiento</span>
+              <span class="gc-tag">Control</span>
+            </div>
+          </div>
+        </div>
+
+        <span class="gc-roadmap-label">ROADMAP PRÓXIMO</span>
+        <div class="gc-roadmap-grid">
+          <div class="gc-future-card reveal">
+            <div class="gc-future-badge">PRÓXIMO MÓDULO</div>
+            <div class="gc-future-icon">👥</div>
+            <div class="gc-future-title">CustomerCore</div>
+            <div class="gc-future-sub">ADMINISTRACIÓN DE CLIENTES</div>
+            <div class="gc-future-desc">
+              Un módulo pensado para centralizar información comercial y
+              operativa de clientes, conectándose con el resto de la suite para
+              mejorar la trazabilidad y la experiencia de gestión.
+            </div>
+            <div class="gc-integration-note">
+              <span class="gc-int-icon">↔</span>
+              Integración directa con GoaltBI y HelpCore
+            </div>
+          </div>
+
+          <div class="gc-future-card reveal">
+            <div class="gc-future-badge">PRÓXIMO MÓDULO</div>
+            <div class="gc-future-icon">📦</div>
+            <div class="gc-future-title">InventoryCore</div>
+            <div class="gc-future-sub">INVENTARIO · APOYO OPERATIVO</div>
+            <div class="gc-future-desc">
+              Sistema de inventario diseñado para trabajar en conjunto con
+              AssetCore, permitiendo controlar entradas, salidas, disponibilidad
+              y relación con activos y mantenimientos.
+            </div>
+            <div class="gc-integration-note">
+              <span class="gc-int-icon">↔</span>
+              Sinergia con AssetCore y ProjectCore
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="gold-divider"></div>
+
     <!-- CONTACTO -->
     <section id="contacto">
       <div class="section">
         <div class="contact-grid">
           <div class="reveal-l">
-            <span class="s-label">05 / CONTACTO</span>
+            <span class="s-label">06 / CONTACTO</span>
             <h2 class="s-title">Hablemos de<br /><span>tu proyecto</span></h2>
             <p class="contact-blurb">
               Disponible para proyectos freelance, colaboraciones y
@@ -1870,10 +2369,14 @@
         el.addEventListener("mouseenter", () => ring.classList.add("hlink"));
         el.addEventListener("mouseleave", () => ring.classList.remove("hlink"));
       });
-      document.querySelectorAll(".tech-card,.proj-wrap").forEach((el) => {
-        el.addEventListener("mouseenter", () => ring.classList.add("hcard"));
-        el.addEventListener("mouseleave", () => ring.classList.remove("hcard"));
-      });
+      document
+        .querySelectorAll(".tech-card,.proj-wrap,.gc-card,.gc-future-card")
+        .forEach((el) => {
+          el.addEventListener("mouseenter", () => ring.classList.add("hcard"));
+          el.addEventListener("mouseleave", () =>
+            ring.classList.remove("hcard"),
+          );
+        });
 
       /* NAV */
       window.addEventListener("scroll", () =>
@@ -1991,6 +2494,30 @@
             sh.style.setProperty("--mx", (x / r.width) * 100 + "%");
             sh.style.setProperty("--my", (y / r.height) * 100 + "%");
           }
+        });
+        card.addEventListener("mouseleave", () => {
+          card.style.transform = "";
+        });
+      });
+
+      document.querySelectorAll(".gc-card").forEach((card) => {
+        card.addEventListener("mousemove", (e) => {
+          const r = card.getBoundingClientRect(),
+            x = e.clientX - r.left,
+            y = e.clientY - r.top;
+          const sh = card.querySelector(".gc-card-shine");
+          if (sh) {
+            sh.style.setProperty("--mx", (x / r.width) * 100 + "%");
+            sh.style.setProperty("--my", (y / r.height) * 100 + "%");
+          }
+        });
+      });
+      document.querySelectorAll(".gc-future-card").forEach((card) => {
+        card.addEventListener("mousemove", (e) => {
+          const r = card.getBoundingClientRect(),
+            x = e.clientX - r.left,
+            y = e.clientY - r.top;
+          card.style.transform = "translateY(-2px)";
         });
         card.addEventListener("mouseleave", () => {
           card.style.transform = "";
